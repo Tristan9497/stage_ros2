@@ -15,7 +15,7 @@ def generate_launch_description():
 
     stage_world_arg = DeclareLaunchArgument(
         'world',
-        default_value=TextSubstitution(text='cave'),
+        default_value=TextSubstitution(text='laas'),
         description='World file relative to the project world file, without .world')
 
     def stage_world_configuration(context):
@@ -28,6 +28,10 @@ def generate_launch_description():
     stage_world_configuration_arg = OpaqueFunction(
         function=stage_world_configuration)
 
+    urdf = os.path.join(
+        this_directory,
+        'world/urdf/pr2.urdf')
+
     return LaunchDescription([
         stage_world_arg,
         stage_world_configuration_arg,
@@ -37,5 +41,24 @@ def generate_launch_description():
             name='stage',
             parameters=[{
                 "world_file": [LaunchConfiguration('world_file')]}],
+        ),
+        Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            output='screen',
+            parameters=[{'use_sim_time': True}],
+            arguments=[urdf]),
+        Node(
+            name='joint_state_publisher',
+            package='joint_state_publisher',
+            executable='joint_state_publisher',
+            parameters=[{'source_list': ["/stage_joint_states"]}],
+        ),
+        Node(
+            name='stage_joints',
+            package='stage_ros2_scripts',
+            executable='stage_joints'
         )
+
     ])
