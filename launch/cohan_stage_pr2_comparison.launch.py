@@ -29,9 +29,16 @@ def generate_launch_description():
     use_composition = LaunchConfiguration('use_composition')
     use_respawn = LaunchConfiguration('use_respawn')
 
+    pose = {'x': LaunchConfiguration('x_pose', default='-2.00'),
+            'y': LaunchConfiguration('y_pose', default='-0.50'),
+            'z': LaunchConfiguration('z_pose', default='0.01'),
+            'R': LaunchConfiguration('roll', default='0.00'),
+            'P': LaunchConfiguration('pitch', default='0.00'),
+            'Y': LaunchConfiguration('yaw', default='0.00')}
+
     stage_world_arg = DeclareLaunchArgument(
         'world',
-        default_value=TextSubstitution(text='comparison'),
+        default_value=TextSubstitution(text='comparison1_1'),
         description='World file relative to the project world file, without .world')
 
     def stage_world_configuration(context):
@@ -123,17 +130,26 @@ def generate_launch_description():
             parameters=[{'use_sim_time': True,
                          'frame_prefix': 'pr2/'}],
             arguments=[urdf]),
-        # Node(
-        #     name='joint_state_publisher',
-        #     package='joint_state_publisher',
-        #     executable='joint_state_publisher',
-        #     parameters=[{'source_list': ["/stage_joint_states"]}],
-        # ),
-        # Node(
-        #     name='stage_joints',
-        #     package='stage_ros2_scripts',
-        #     executable='stage_joints'
-        # ),
+        Node(
+            name='joint_state_publisher',
+            package='joint_state_publisher',
+            executable='joint_state_publisher',
+            parameters=[{'source_list': ["/stage_joint_states"]}],
+        ),
+        Node(
+            name='stage_joints',
+            package='stage_ros2_scripts',
+            executable='stage_joints'
+        ),
+        Node(
+            package='rviz2',
+            namespace='',
+            executable='rviz2',
+            name='rviz2',
+            parameters=[{'use_sim_time': True}],
+            arguments=[
+                '-d', [os.path.join(this_directory, 'config', 'rviz', 'comparison.rviz')]]
+        ),
         declare_namespace_cmd,
         declare_use_namespace_cmd,
         declare_slam_cmd,
