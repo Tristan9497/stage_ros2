@@ -123,17 +123,17 @@ def generate_launch_description():
             parameters=[{'use_sim_time': True,
                          'frame_prefix': 'pr2/'}],
             arguments=[urdf]),
-        # Node(
-        #     name='joint_state_publisher',
-        #     package='joint_state_publisher',
-        #     executable='joint_state_publisher',
-        #     parameters=[{'source_list': ["/stage_joint_states"]}],
-        # ),
-        # Node(
-        #     name='stage_joints',
-        #     package='stage_ros2_scripts',
-        #     executable='stage_joints'
-        # ),
+        Node(
+            name='joint_state_publisher',
+            package='joint_state_publisher',
+            executable='joint_state_publisher',
+            parameters=[{'source_list': ["/stage_joint_states"]}],
+        ),
+        Node(
+            name='stage_joints',
+            package='stage_ros2_scripts',
+            executable='stage_joints'
+        ),
         Node(
             package='rviz2',
             namespace='',
