@@ -5,7 +5,7 @@
 #include <filesystem>
 
 #define TOPIC_LASER "base_scan"
-#define FRAME_LASER "laser"
+#define FRAME_LASER "base_laser_link"
 
 using std::placeholders::_1;
 

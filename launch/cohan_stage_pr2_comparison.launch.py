@@ -127,12 +127,14 @@ def generate_launch_description():
             name='joint_state_publisher',
             package='joint_state_publisher',
             executable='joint_state_publisher',
-            parameters=[{'source_list': ["/stage_joint_states"]}],
+            parameters=[{'use_sim_time': True,'source_list': ["/stage_joint_states"]}],
         ),
         Node(
             name='stage_joints',
             package='stage_ros2_scripts',
-            executable='stage_joints'
+            executable='stage_joints',
+            parameters=[{'use_sim_time': True}],
+            
         ),
         Node(
             package='rviz2',

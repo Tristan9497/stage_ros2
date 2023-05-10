@@ -58,7 +58,7 @@ void StageNode::declare_parameters()
 
   auto param_desc_frame_id_world_name_ = rcl_interfaces::msg::ParameterDescriptor{};
   param_desc_frame_id_world_name_.description = "world frame name for ground truth odom data";
-  this->declare_parameter<std::string>("frame_id_world", "world", param_desc_frame_id_world_name_);
+  this->declare_parameter<std::string>("frame_id_world", "map", param_desc_frame_id_world_name_);
 
   auto param_desc_frame_id_base_link_name_ = rcl_interfaces::msg::ParameterDescriptor{};
   param_desc_frame_id_base_link_name_.description =
